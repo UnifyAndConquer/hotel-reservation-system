@@ -13,7 +13,7 @@ public class SkillsClient
         String response = in.readLine();
          System.out.println(response);
        
-       
+       //;lsedfgolp;['lhgfd']
     }
     
 }
