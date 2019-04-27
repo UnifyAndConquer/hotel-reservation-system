@@ -41,7 +41,7 @@ public class HotelGui {
 			}
 		});
 	}
-	
+
 	Connection sqlconn = null;
 
 	/**
@@ -61,14 +61,14 @@ public class HotelGui {
 		frame.setBounds(100, 100, 930, 622);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setToolTipText("");
 		layeredPane.setBackground(Color.CYAN);
 		layeredPane.setBounds(6, 57, 455, 440);
 		layeredPane.setOpaque(true);
 		frame.getContentPane().add(layeredPane);
-		
+
 		JButton btnNewButton = new JButton("Log in");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
@@ -77,14 +77,14 @@ public class HotelGui {
 						PreparedStatement pst = sqlconn.prepareStatement(query);
 						pst.setString(1,textField.getText());
 						pst.setString(2,passwordField.getText());
-						
+
 						ResultSet rs = pst.executeQuery();
 						int counter = 0;
 						while(rs.next())
 						{
 							counter++;
 						}
-						
+
 						if(counter == 1)
 						{
 							JOptionPane.showMessageDialog(null, "Correct username and password");
@@ -97,7 +97,7 @@ public class HotelGui {
 						{
 							JOptionPane.showMessageDialog(null, "Duplicate encountered");
 						}
-						
+
 						rs.close();
 						pst.close();
 				}catch(Exception e)
@@ -108,7 +108,7 @@ public class HotelGui {
 		});
 		btnNewButton.setBounds(93, 177, 117, 29);
 		layeredPane.add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("New user? Create an account.");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -123,30 +123,27 @@ public class HotelGui {
 		btnNewButton_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		btnNewButton_1.setBounds(6, 218, 186, 29);
 		layeredPane.add(btnNewButton_1);
-		
+
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(new TitledBorder(null, "E-mail address", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(6, 43, 213, 50);
 		layeredPane.add(panel);
-		
+
 		textField = new JTextField();
 		textField.setColumns(10);
 		textField.setBounds(6, 15, 201, 29);
 		panel.add(textField);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBorder(new TitledBorder(null, "Password", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(6, 112, 213, 53);
 		layeredPane.add(panel_1);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBounds(6, 18, 201, 29);
 		panel_1.add(passwordField);
-	
-		
 
-		
 	}
 }
