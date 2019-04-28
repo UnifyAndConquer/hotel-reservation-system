@@ -11,7 +11,9 @@ public class ServerConnection extends Thread
 	Server server;
 	DataInputStream din;
 	DataOutputStream dout;
-	ThreadLocal<Integer> num = ThreadLocal.withInitial(()-> server.num);
+	ThreadLocal<Integer> num = ThreadLocal.withInitial(()-> server.num);	// connection number
+	ThreadLocal<Integer> state = ThreadLocal.withInitial(()-> 6);			// server state is local to each thread
+	ThreadLocal<Boolean> login = ThreadLocal.withInitial(()-> false);		// set to true upon login
 	boolean shouldRun = true;
 	
 	public ServerConnection(Socket socket, Server server)
@@ -34,15 +36,6 @@ public class ServerConnection extends Thread
 		}
 	}
 	
-	public void sendStringToAllClients(String text)
-	{
-		for (int index = 0; index < server.connections.size(); index++)
-		{
-			ServerConnection sc = server.connections.get(index);
-			sc.sendStringToClient("connection " + index + ":" + text);
-		}
-	}
-	
 	public void run()
 	{
 		try 
@@ -56,22 +49,43 @@ public class ServerConnection extends Thread
 				{
 					try {
 						Thread.sleep(1);
-					} catch (InterruptedException e) 
+					} 
+					catch (InterruptedException e) 
 					{
 						e.printStackTrace();
 					}
 				}
+				
 				String textIn = din.readUTF();
-				sendStringToClient("connection " + num.get() + ":" + textIn);
+				System.out.println(textIn);
+				
+//				StateHandler sh = new StateHandler(state.get(), textIn, login.get());   // pass thread state and client input to StateHandler constructor
+//				state.set(sh.getNextState());							   // update thread state after transition has been carried out
+//				login.set(sh.getLogin()); 								   // update login state		
+//				String textOut = sh.getOutput();						   // return output of state transition to client
+				
+				sendStringToClient(textIn);
 			}
 			
 			din.close();
 			dout.close();
 			socket.close();
 			
-		} catch (IOException e) 
+		} 
+		catch (IOException e) 
 		{
 			e.printStackTrace();
-		}	
+		}
 	}
 }
+
+
+
+//public void sendStringToAllClients(String text)
+//{
+//	for (int index = 0; index < server.connections.size(); index++)
+//	{
+//		ServerConnection sc = server.connections.get(index);
+//		sc.sendStringToClient("connection " + index + ":" + text);
+//	}
+//}

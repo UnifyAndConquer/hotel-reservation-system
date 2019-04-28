@@ -11,8 +11,9 @@ public class ClientConnection extends Thread{
 	DataInputStream din;
 	DataOutputStream dout;
 	boolean shouldRun = true;
+	volatile String serverResponse;
 
-	public ClientConnection(Socket socket, Testclient client)
+	public ClientConnection(Socket socket)
 	{
 		s = socket;
 	}
@@ -30,9 +31,14 @@ public class ClientConnection extends Thread{
 		}
 	}
 	
+	public String getServerResponse()
+	{
+		return(serverResponse);
+	}
+	
+	
 	public void run()
 	{
-
 		try {
 			din = new DataInputStream(s.getInputStream());
 			dout = new DataOutputStream(s.getOutputStream());
@@ -53,8 +59,8 @@ public class ClientConnection extends Thread{
 						}
 					}
 
-					String reply = din.readUTF();
-					System.out.println(reply);
+					serverResponse = din.readUTF();
+					System.out.println("got response");
 				}
 				catch (IOException e)
 				{

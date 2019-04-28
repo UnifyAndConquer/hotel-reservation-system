@@ -20,7 +20,7 @@ public class Server
 	
 	public static void main(String args[]) throws IOException
 	{
-		System.out.print("Server started");
+		System.out.println("Server started...");
 		new Server();
 	}
 	
@@ -32,7 +32,10 @@ public class Server
 			while(shouldRun)
 			{
 				Socket s = ss.accept();
+				
 				num ++;
+				System.out.println("Client " + num + " connected: ");
+				
 				ServerConnection sc = new ServerConnection(s, this);
 				sc.start();
 				connections.add(sc);
@@ -46,11 +49,6 @@ public class Server
 }
 	
 
-	
-	
-	
-
-	
 	
 //	SQL connection	
 	

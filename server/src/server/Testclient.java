@@ -9,24 +9,23 @@ import java.util.Scanner;
 
 public class Testclient {
 	
-	
 	ClientConnection cc;
 	
-	public static void main(String args[]) throws UnknownHostException, IOException
-	{
-		new Testclient();
-	}
+//	public static void main(String args[]) throws UnknownHostException, IOException
+//	{
+//		new Testclient();
+//	}
 	
 	// constructor
 	public Testclient()
 	{
 		try
 		{
-			Socket s = new Socket("127.0.0.1", 3001); //initialize client socket
-			cc = new ClientConnection(s, this);
-			cc.start();
+			Socket s = new Socket("127.0.0.1", 3001); // initialize client socket
+//			cc = new ClientConnection(s, this);
+//			cc.start();
 			
-			listenForInput();
+//			listenForInput();
 		}
 		catch (UnknownHostException e)
 		{
@@ -38,36 +37,37 @@ public class Testclient {
 		}
 	}
 	
-	public void listenForInput()
-	{
-		System.out.println("type in command:");
-		Scanner console = new Scanner(System.in);
-		
-		while (true)
-		{
-			while (!console.hasNextLine())  // while nothing is coming from the console
-			{
-				try 
-				{
-					Thread.sleep(1);
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			String input = console.nextLine();  //take input from console
-			
-			if (input.toLowerCase().equals("quit"))
-			{
-				break;
-			}
-			cc.sendStringToServer(input);
-		}
-		cc.close();
-		console.close();
-	}
+//	public void listenForInput()
+//	{
+//		System.out.println("enter text: ");
+//		
+//		Scanner console = new Scanner(System.in);
+//		
+//		while (true)
+//		{
+//			while (!console.hasNextLine())  // while nothing is coming from the console
+//			{
+//				try 
+//				{
+//					Thread.sleep(1);
+//				}
+//				catch (InterruptedException e)
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//			String input = console.nextLine();  //take input from console
+//			
+//			if (input.toLowerCase().equals("quit"))
+//			{
+//				break;
+//			}
+//			cc.sendStringToServer(input);
+//		}
+//		cc.close();
+//		console.close();
+//	}
 }
 
 
