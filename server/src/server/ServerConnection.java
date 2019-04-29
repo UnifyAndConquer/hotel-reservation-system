@@ -12,7 +12,7 @@ public class ServerConnection extends Thread
 	DataInputStream din;
 	DataOutputStream dout;
 	ThreadLocal<Integer> num = ThreadLocal.withInitial(()-> server.num);	// connection number
-	ThreadLocal<Integer> state = ThreadLocal.withInitial(()-> 6);			// server state is local to each thread
+	ThreadLocal<Integer> state = ThreadLocal.withInitial(()-> 1);			// server state is local to each thread
 	ThreadLocal<Boolean> login = ThreadLocal.withInitial(()-> false);		// set to true upon login
 	boolean shouldRun = true;
 	
@@ -57,7 +57,7 @@ public class ServerConnection extends Thread
 				}
 				
 				String textIn = din.readUTF();
-				System.out.println(textIn);
+				System.out.println("Server receives: "+textIn);
 				
 				StateHandler sh = new StateHandler(state.get(), textIn, login.get());   // pass thread state and client input to StateHandler constructor
 				state.set(sh.getNextState());							   // update thread state after transition has been carried out

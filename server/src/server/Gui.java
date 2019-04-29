@@ -117,8 +117,8 @@ public class Gui extends JFrame implements ActionListener
 		                try 
 		                {
 		                	String command = "DONE;"+ txtFirst.getText() + "," + txtLast.getText() + "," + txtAge.getText() + "," + txtPass.getText() + "," + txtMail.getText();
-							sendCommand(command);
-//							System.out.println(command);
+		                	System.out.println("Client sends: " + command);
+		                	sendCommand(command);
 						} 
 		                catch (InterruptedException e1) 
 		                {
@@ -151,7 +151,7 @@ public class Gui extends JFrame implements ActionListener
     	
     	if(cc.serverResponds())
     	{
-    		System.out.println(cc.getServerResponse());
+    		System.out.println("Server replies: "+cc.getServerResponse());  // use this to change window and display data if needed
     	}
     }
 
