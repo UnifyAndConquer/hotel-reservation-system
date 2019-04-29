@@ -1,4 +1,4 @@
-package cqqf;
+package server;
 
 
 import java.sql.*;

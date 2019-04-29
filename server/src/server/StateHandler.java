@@ -38,9 +38,7 @@ public class StateHandler {
 	}
 	
 	public void parseInput()  // chop input into command and data
-	{
-//		ArrayList<String> data = new ArrayList<String>();
-		
+	{	
 		String[] com = input.split(";");
 		command = com[0];
 		
@@ -78,13 +76,13 @@ public class StateHandler {
 					if(db.insert_client(data.get(0), data.get(1), data.get(2), data.get(3), data.get(4)))  // db returns OK
 					{
 						System.out.println("db insert successful");
-						output  = "2;";
+						output  = "2;,";
 						nextState = 2;   // go to "set date"
 					}
 					else
 					{
 						System.out.println("db insert not successful");
-						output = "500;";  				// ERROR: duplicate record
+						output = "500;,";  				// ERROR: duplicate record
 						nextState = currentState;
 					}
 				}
@@ -96,20 +94,20 @@ public class StateHandler {
 							System.out.println(data.get(i));
 						}
 					
-					output = "400;";     			//ERROR: empty data after command
+					output = "400;,";     			//ERROR: empty data after command
 					nextState = currentState;
 				}
 			}
 			else if(command.equals("LOGIN"))
 			{
 				System.out.println("command = LOGIN");
-				output = "6;";
+				output = "6;,";
 				nextState = 6;
 			}
 			else
 			{
 				System.out.println("command = "+command);
-				output = "401;";	  				//ERROR: invalid command
+				output = "401;,";	  				//ERROR: invalid command
 				nextState = currentState;
 			}
 			

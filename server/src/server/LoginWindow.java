@@ -20,87 +20,44 @@ import javax.swing.JTextField;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Gui extends JFrame implements ActionListener 
+public class LoginWindow extends JFrame implements ActionListener 
 {
-	
-    JLabel lblAge;
-    JLabel lblFirst;
-    JLabel lblLast;
     JLabel lblPass;
     JLabel lblMail;
-    JTextField txtPass;
-    JTextField txtAge;
-    JTextField txtFirst;
-    JTextField txtLast;
     JTextField txtMail;
+    JTextField txtPass;
     JButton btnDone;
-    JButton btnLogin;
-    JTextArea txtS;
-    ClientConnection cc;
+    JButton btnRegister;
     String serverResponse;
     int nextWindow;
+    ClientConnection cc;
     ArrayList<String> data = new ArrayList<String>();
-    
-    
-    public static void main(String[] args) throws UnknownHostException, IOException 
-    {
-        new Gui();
-    }
-
-    public Gui() throws UnknownHostException, IOException 
-
-    {
-		Socket s = new Socket("127.0.0.1", 3001); // initialize client socket
-		cc = new ClientConnection(s);
-		cc.start();
-		
-        this.setTitle("Create account");
+	
+	public LoginWindow(ClientConnection conn) throws UnknownHostException, IOException
+	{
+		this.setTitle("Login");
         this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
-
-        lblFirst = new JLabel("First Name: ");
-        lblFirst.setBounds(10, 10, 90, 21);
-        add(lblFirst);
-
-        txtFirst = new JTextField();
-        txtFirst.setBounds(105, 10, 90, 21);
-        add(txtFirst);
-
-        lblLast = new JLabel("Last Name: ");
-        lblLast.setBounds(10, 35, 90, 21);
-        add(lblLast);
-
-        txtLast = new JTextField();
-        txtLast.setBounds(105, 35, 90, 21);
-        add(txtLast);
-
-        lblAge = new JLabel("Date of birth: ");
-        lblAge.setBounds(10, 60, 90, 21);
-        add(lblAge);
-
-        txtAge = new JTextField();
-        txtAge.setBounds(105, 60, 90, 21);
-        add(txtAge);
-        
-        lblMail = new JLabel("Email: ");
-        lblMail.setBounds(10, 85, 90, 21);
-        add(lblMail);
-
-        txtMail = new JTextField();
-        txtMail.setBounds(105, 85, 90, 21);
-        add(txtMail);
+        cc = conn;
         
         lblPass = new JLabel("Password: ");
-        lblPass.setBounds(10, 110, 90, 21);
+        lblPass.setBounds(10, 35, 90, 21);
         add(lblPass);
 
         txtPass = new JTextField();
-        txtPass.setBounds(105, 110, 90, 21);
+        txtPass.setBounds(105, 35, 90, 21);
         add(txtPass);
+        
+        lblMail = new JLabel("Email: ");
+        lblMail.setBounds(10, 10, 90, 21);
+        add(lblMail);
 
-	    
-	    btnDone = new JButton("Done");
+        txtMail = new JTextField();
+        txtMail.setBounds(105, 10, 90, 21);
+        add(txtMail);
+        
+        btnDone = new JButton("Done");
 	    btnDone.addActionListener(new ActionListener() 
 	    {
 		    @Override
@@ -112,7 +69,7 @@ public class Gui extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "DONE;"+ txtFirst.getText() + "," + txtLast.getText() + "," + txtAge.getText() + "," + txtPass.getText() + "," + txtMail.getText();
+		                	String command = "DONE;";
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 
@@ -138,13 +95,13 @@ public class Gui extends JFrame implements ActionListener
         add(btnDone);
         
         
-        btnLogin = new JButton("Login");
-        btnLogin.addActionListener(new ActionListener() 
+        btnRegister = new JButton("Register");
+        btnRegister.addActionListener(new ActionListener() 
 	    {
 		    @Override
 		    public void actionPerformed(ActionEvent e) 
 		    {
-		        if (e.getSource().equals(btnLogin)) 
+		        if (e.getSource().equals(btnRegister)) 
 		        {
 		            try 
 		            {
@@ -171,11 +128,22 @@ public class Gui extends JFrame implements ActionListener
 		    }
 	    });
 	    
-        btnLogin.setBounds(200, 80, 90, 20);
-        btnLogin.addActionListener(this);
-        add(btnLogin);
-        
-        this.setVisible(true);
+        btnRegister.setBounds(200, 80, 90, 20);
+        btnRegister.addActionListener(this);
+        add(btnRegister);
+	}
+	
+    public void sendCommand(String command) throws UnknownHostException, IOException, InterruptedException 
+    {
+    	cc.sendStringToServer(command);
+    	
+    	if(cc.serverResponds())
+    	{
+    		System.out.println("Server replies: "+cc.getServerResponse());  // use this to change window and display data if needed
+    		serverResponse = cc.getServerResponse();
+    		parseInput();
+    		goToNextWindow(nextWindow);
+    	}
     }
     
     public void parseInput()  // chop input into command and data
@@ -190,36 +158,19 @@ public class Gui extends JFrame implements ActionListener
 			data.add(dat[i]);
 		}
 	}
-
-    public void sendCommand(String command) throws UnknownHostException, IOException, InterruptedException 
-    {
-    	cc.sendStringToServer(command);
-    	
-    	if(cc.serverResponds())
-    	{
-    		System.out.println("Server replies: "+cc.getServerResponse());  // use this to change window and display data if needed
-    		serverResponse = cc.getServerResponse();
-    		parseInput();
-    		System.out.println(nextWindow);
-    		goToNextWindow(nextWindow);
-    	}
-    }
     
     public void goToNextWindow(int window) throws UnknownHostException, IOException
     {
     	switch (window)
     	{
     		case 2:
-    			// go to set dates
     			
     		case 6:
-    			LoginWindow login = new LoginWindow(cc);
-    			login.setVisible(true);
-    			this.setVisible(false);
     	}
     }
-
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+	
 }
-
