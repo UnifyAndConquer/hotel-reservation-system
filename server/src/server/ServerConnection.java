@@ -59,12 +59,12 @@ public class ServerConnection extends Thread
 				String textIn = din.readUTF();
 				System.out.println(textIn);
 				
-//				StateHandler sh = new StateHandler(state.get(), textIn, login.get());   // pass thread state and client input to StateHandler constructor
-//				state.set(sh.getNextState());							   // update thread state after transition has been carried out
-//				login.set(sh.getLogin()); 								   // update login state		
-//				String textOut = sh.getOutput();						   // return output of state transition to client
+				StateHandler sh = new StateHandler(state.get(), textIn, login.get());   // pass thread state and client input to StateHandler constructor
+				state.set(sh.getNextState());							   // update thread state after transition has been carried out
+				login.set(sh.getLogin()); 								   // update login state		
+				String textOut = sh.getOutput();						   // return output of state transition to client
 				
-				sendStringToClient(textIn);
+				sendStringToClient(textOut);
 			}
 			
 			din.close();

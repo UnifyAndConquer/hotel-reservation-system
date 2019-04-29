@@ -18,15 +18,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.util.concurrent.TimeUnit;
 
-public class Gui extends JFrame implements ActionListener {
+public class Gui extends JFrame implements ActionListener 
+{
 	
-    JLabel lblName;
     JLabel lblAge;
-    JLabel lblMark;
-    JTextField txtName;
+    JLabel lblFirst;
+    JLabel lblLast;
+    JLabel lblPass;
+    JLabel lblMail;
+    JTextField txtPass;
     JTextField txtAge;
-    JTextField txtMark;
-    JButton btnProcess;
+    JTextField txtFirst;
+    JTextField txtLast;
+    JTextField txtMail;
+    JButton btnDone;
+    JButton btnLogin;
     JTextArea txtS;
     ClientConnection cc;
     String serverResponse;
@@ -44,96 +50,112 @@ public class Gui extends JFrame implements ActionListener {
 		cc = new ClientConnection(s);
 		cc.start();
 		
-        this.setTitle("Simple Sample");
-        this.setSize(320, 240);
+        this.setTitle("Hotel reservation system");
+        this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
-        lblName = new JLabel("Name: ");
-        lblName.setBounds(10, 10, 90, 21);
-        add(lblName);
+        lblFirst = new JLabel("First Name: ");
+        lblFirst.setBounds(10, 10, 90, 21);
+        add(lblFirst);
 
-        txtName = new JTextField();
-        txtName.setBounds(105, 10, 90, 21);
-        add(txtName);
+        txtFirst = new JTextField();
+        txtFirst.setBounds(105, 10, 90, 21);
+        add(txtFirst);
 
-        lblAge = new JLabel("Age: ");
-        lblAge.setBounds(10, 35, 90, 21);
+        lblLast = new JLabel("Last Name: ");
+        lblLast.setBounds(10, 35, 90, 21);
+        add(lblLast);
+
+        txtLast = new JTextField();
+        txtLast.setBounds(105, 35, 90, 21);
+        add(txtLast);
+
+        lblAge = new JLabel("Date of birth: ");
+        lblAge.setBounds(10, 60, 90, 21);
         add(lblAge);
 
         txtAge = new JTextField();
-        txtAge.setBounds(105, 35, 90, 21);
+        txtAge.setBounds(105, 60, 90, 21);
         add(txtAge);
+        
+        lblMail = new JLabel("Email: ");
+        lblMail.setBounds(10, 85, 90, 21);
+        add(lblMail);
 
-        lblMark = new JLabel("Mark: ");
-        lblMark.setBounds(10, 60, 90, 21);
-        add(lblMark);
+        txtMail = new JTextField();
+        txtMail.setBounds(105, 85, 90, 21);
+        add(txtMail);
+        
+        lblPass = new JLabel("Password: ");
+        lblPass.setBounds(10, 110, 90, 21);
+        add(lblPass);
 
-        txtMark = new JTextField();
-        txtMark.setBounds(105, 60, 90, 21);
-        add(txtMark);
+        txtPass = new JTextField();
+        txtPass.setBounds(105, 110, 90, 21);
+        add(txtPass);
 
-        btnProcess = new JButton("Process");
-        btnProcess.setBounds(200, 40, 90, 21);
-        btnProcess.addActionListener(this);
-        add(btnProcess);
+//        btnDone = new JButton("Done");
 
-        txtS = new JTextArea();
-        txtS.setBounds(10, 85, 290, 120);
-        add(txtS);
+        
+//        btnLogin = new JButton("Login");
+//        btnLogin.setBounds(200, 80, 90, 20);
+//        btnLogin.addActionListener(this);
+//        add(btnLogin);
 
+	    
+	    btnDone = new JButton("Done");
+	    btnDone.addActionListener(new ActionListener() 
+	    {
+		    @Override
+		    public void actionPerformed(ActionEvent e) 
+		    {
+		        if (e.getSource().equals(btnDone)) 
+		        {
+		            try 
+		            {
+		                try 
+		                {
+		                	String command = "DONE;"+ txtFirst.getText() + "," + txtLast.getText() + "," + txtAge.getText() + "," + txtPass.getText() + "," + txtMail.getText();
+							sendCommand(command);
+//							System.out.println(command);
+						} 
+		                catch (InterruptedException e1) 
+		                {
+							e1.printStackTrace();
+						}
+		            } 
+		            catch (UnknownHostException e1) 
+		            {
+		                e1.printStackTrace();
+		            } 
+		            catch (IOException e1) 
+		            {
+		                e1.printStackTrace();
+		            }
+		        }
+		    }
+	    });
+	    
+        btnDone.setBounds(200, 40, 90, 20);
+        btnDone.addActionListener(this);
+        add(btnDone);
+        
         this.setVisible(true);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(btnProcess)) {
-            try 
-            {
-                try 
-                {
-					sendCommand(Integer.toString(messageCount++));
-				} 
-                catch (InterruptedException e1) 
-                {
-					e1.printStackTrace();
-				}
-            } 
-            catch (UnknownHostException e1) 
-            {
-                e1.printStackTrace();
-            } 
-            catch (IOException e1) 
-            {
-                e1.printStackTrace();
-            }
-        }
-    }
+    
 
     public void sendCommand(String command) throws UnknownHostException, IOException, InterruptedException 
     {
     	cc.sendStringToServer(command);
-    	serverResponse = cc.getServerResponse();
-    	System.out.println("Client: " + serverResponse);
+    	
+    	if(cc.serverResponds())
+    	{
+    		System.out.println(cc.getServerResponse());
+    	}
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {}
 }
-
-
-//Socket s = new Socket("localhost", 3001);
-//DataOutputStream p = new DataOutputStream(s.getOutputStream());
-
-//String name = txtName.getText();
-//int mark = Integer.parseInt(txtMark.getText());
-//int age = Integer.parseInt(txtAge.getText());
-
-//p.writeUTF("test");
-//p.flush();
-
-// Here we read the details from server
-
-//BufferedReader response = new BufferedReader(new InputStreamReader(s.getInputStream()));
-//txtS.setText("The server respond: " + response.readLine());
-//p.close();
-//response.close();
-//s.close();
 

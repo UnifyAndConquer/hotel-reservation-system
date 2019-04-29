@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class ClientConnection extends Thread{
 	
@@ -11,7 +12,7 @@ public class ClientConnection extends Thread{
 	DataInputStream din;
 	DataOutputStream dout;
 	boolean shouldRun = true;
-	volatile String serverResponse;
+	volatile public String serverResponse;
 
 	public ClientConnection(Socket socket)
 	{
@@ -58,9 +59,9 @@ public class ClientConnection extends Thread{
 							e.printStackTrace();
 						}
 					}
-
+				
 					serverResponse = din.readUTF();
-					System.out.println("got response");
+//					System.out.println(serverResponse);
 				}
 				catch (IOException e)
 				{
@@ -88,5 +89,17 @@ public class ClientConnection extends Thread{
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public Boolean serverResponds() throws InterruptedException {
+		String s=serverResponse;
+		
+		while(serverResponse==s)
+		{
+			TimeUnit.MILLISECONDS.sleep(10);
+//			System.out.println("inside loop");
+		}
+		
+		return(true);
 	}
 }
