@@ -61,6 +61,8 @@ public class ServerConnection extends Thread
 				
 				StateHandler sh = new StateHandler(state.get(), textIn, login.get());   // pass thread state and client input to StateHandler constructor
 				state.set(sh.getNextState());							   // update thread state after transition has been carried out
+				System.out.println("Next state: "+state.get());
+				
 				login.set(sh.getLogin()); 								   // update login state		
 				String textOut = sh.getOutput();						   // return output of state transition to client
 				

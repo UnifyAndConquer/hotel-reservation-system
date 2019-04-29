@@ -221,7 +221,7 @@ public class Db {
 			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select* from reservation");
+			ResultSet rs = stmt.executeQuery("select* from reservation where roomid="+room_id+";");
 			
 			while(rs.next())
 			{

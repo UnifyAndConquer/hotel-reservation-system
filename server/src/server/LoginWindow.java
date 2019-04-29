@@ -69,7 +69,7 @@ public class LoginWindow extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "DONE;";
+		                	String command = "DONE;,";
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 
@@ -107,7 +107,7 @@ public class LoginWindow extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "LOGIN;,,,,";
+		                	String command = "REGISTER;,";
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 
@@ -163,9 +163,19 @@ public class LoginWindow extends JFrame implements ActionListener
     {
     	switch (window)
     	{
-    		case 2:
+    		case 1:  // register
+    			Gui register = new Gui(cc);
+    			register.setVisible(true);
+    			this.setVisible(false);
+    			break;
     			
-    		case 6:
+    		case 2:  // set dates
+    			SetDatesWindow setDates = new SetDatesWindow(cc);
+    			setDates.setVisible(true);
+    			this.setVisible(false);
+    			break;
+    			
+    		default:
     	}
     }
 	

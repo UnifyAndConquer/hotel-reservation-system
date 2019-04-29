@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Gui extends JFrame implements ActionListener 
 {
-	
     JLabel lblAge;
     JLabel lblFirst;
     JLabel lblLast;
@@ -44,16 +43,18 @@ public class Gui extends JFrame implements ActionListener
     
     public static void main(String[] args) throws UnknownHostException, IOException 
     {
-        new Gui();
+        Socket s = new Socket("127.0.0.1", 3001); // initialize client socket
+        ClientConnection conn = new ClientConnection(s);
+		conn.start();
+		
+		new Gui(conn);
     }
 
-    public Gui() throws UnknownHostException, IOException 
+    public Gui(ClientConnection conn) throws UnknownHostException, IOException 
 
     {
-		Socket s = new Socket("127.0.0.1", 3001); // initialize client socket
-		cc = new ClientConnection(s);
-		cc.start();
-		
+    	cc = conn;
+    	
         this.setTitle("Create account");
         this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +151,7 @@ public class Gui extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "LOGIN;,,,,";
+		                	String command = "LOGIN;,";
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 
@@ -182,13 +183,6 @@ public class Gui extends JFrame implements ActionListener
 	{	
 		String[] com = serverResponse.split(";");
 		nextWindow = Integer.parseInt(com[0]);
-		
-		String[] dat = com[1].split(",");
-		
-		for (int i = 0; i < dat.length; i++)
-		{
-			data.add(dat[i]);
-		}
 	}
 
     public void sendCommand(String command) throws UnknownHostException, IOException, InterruptedException 
@@ -211,11 +205,15 @@ public class Gui extends JFrame implements ActionListener
     	{
     		case 2:
     			// go to set dates
+    			break;
     			
     		case 6:
     			LoginWindow login = new LoginWindow(cc);
     			login.setVisible(true);
     			this.setVisible(false);
+    			break;
+    			
+    		default:
     	}
     }
 
