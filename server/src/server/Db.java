@@ -16,17 +16,17 @@ import java.util.concurrent.TimeUnit;
 
 public class Db {
 
-	public static void main(String[] args) {
-		boolean [] b=	prefrences(2,"12-02-2011","12-05-2012",true);
-		for(int i =0;i<b.length;i++)
-			System.out.println(b[i]);
-	} 
+//	public static void main(String[] args) {
+//		boolean [] b=	preferences(2,"12-02-2011","12-05-2012",true);
+//		for(int i =0;i<b.length;i++)
+//			System.out.println(b[i]);
+//	} 
 	public static void select_clients()
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		try 
 		{
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -44,10 +44,10 @@ public class Db {
 		}
 	}
 	public static void select_client(String mail)
-	{		String url = "jdbc:mysql://localhost:3306/new_schema";
+	{		String url = "jdbc:mysql://localhost:3306/HotelData";
 	try 
 	{
-		Connection conn =DriverManager.getConnection(url, "root", "naldo");
+		Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 		Statement stmt = conn.createStatement();
 
@@ -72,8 +72,8 @@ public class Db {
 	{
 		try 
 		{
-			String url = "jdbc:mysql://localhost:3306/new_schema";
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			String url = "jdbc:mysql://localhost:3306/HotelData";
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -97,10 +97,10 @@ public class Db {
 	}
 
 	public static void select_rooms()
-	{		String url = "jdbc:mysql://localhost:3306/new_schema";
+	{		String url = "jdbc:mysql://localhost:3306/HotelData";
 	try 
 	{
-		Connection conn =DriverManager.getConnection(url, "root", "naldo");
+		Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 		Statement stmt = conn.createStatement();
 
@@ -125,10 +125,10 @@ public class Db {
 
 	}
 	public static int select_room_price(int room_id)
-	{		String url = "jdbc:mysql://localhost:3306/new_schema";
+	{		String url = "jdbc:mysql://localhost:3306/HotelData";
 	try 
 	{
-		Connection conn =DriverManager.getConnection(url, "root", "naldo");
+		Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 		Statement stmt = conn.createStatement();
 
@@ -150,12 +150,12 @@ public class Db {
 	}
 	public static boolean insert_client(String first,String last,String dob, String pass,String mail)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		String sql="insert into client (first_name,last_name,date_of_birth,pass,mail) values('"+first+"','" +last+ "',STR_TO_DATE('"+dob+ "', '%d-%m-%Y'),'"+ pass +"','"+mail+"');";
 
 		try 
 		{
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -183,7 +183,7 @@ public class Db {
 
 	public static void insert_room(boolean smoking,int numberOfPersons,int price)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		int intsmoking;
 		if(smoking==true)
 			intsmoking=1;
@@ -193,7 +193,7 @@ public class Db {
 		String sql="insert into rooms (smoking,price,numberOfPersons) values(smoking: "+intsmoking+", price: "+price+", numberofpers: "+numberOfPersons+")";
 		try 
 		{
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -207,7 +207,7 @@ public class Db {
 	}
 	public static boolean insert_reservation(int client_id,int room_id,String checkin, String checkout)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		boolean o=false;
@@ -222,7 +222,7 @@ public class Db {
 
 			String sql="insert into reservation(roomid,clientid,checkin,checkout,price) values('"+room_id+"','" +client_id+ "',STR_TO_DATE('"+checkin+ "', '%d-%m-%Y')"+ ",STR_TO_DATE('"+checkout+ "', '%d-%m-%Y'),"+select_room_price( room_id)*diff+");";
 
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select* from reservation");
@@ -243,10 +243,10 @@ public class Db {
 		return !o;
 	}
 	public static void select_reservations()
-	{		String url = "jdbc:mysql://localhost:3306/new_schema";
+	{		String url = "jdbc:mysql://localhost:3306/HotelData";
 	try 
 	{
-		Connection conn =DriverManager.getConnection(url, "root", "naldo");
+		Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 		Statement stmt = conn.createStatement();
 
@@ -265,12 +265,12 @@ public class Db {
 	}
 	public static void edit_password(String pass, int client_id)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		String sql="UPDATE client SET pass = '"+pass+"' WHERE idclient = "+client_id+";";
 
 		try 
 		{
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -283,12 +283,12 @@ public class Db {
 		}
 	}
 	public static void edit_mail(String mail, int client_id)
-	{		String url = "jdbc:mysql://localhost:3306/new_schema";
+	{		String url = "jdbc:mysql://localhost:3306/HotelData";
 	String sql="UPDATE client SET mail = '"+mail+"' WHERE idclient = "+client_id+";";
 
 	try 
 	{
-		Connection conn =DriverManager.getConnection(url, "root", "naldo");
+		Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 		Statement stmt = conn.createStatement();
 
@@ -302,7 +302,7 @@ public class Db {
 	}
 	public static boolean edit_res(int reservation_id,String checkin,String checkout)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		boolean o=false;
@@ -317,7 +317,7 @@ public class Db {
 
 			String sql="UPDATE reservation set checkin ="+ "STR_TO_DATE('"+ checkin + " ', '%d-%m-%Y'),checkout=STR_TO_DATE('"+checkout+ "', '%d-%m-%Y') where idreservation="+reservation_id+";";
 
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -352,18 +352,18 @@ public class Db {
 
 
 	}
-	public static boolean[] prefrences(int nbofpers,String checkin,String checkout,boolean smoking)
+	public static boolean[] preferences(int nbofpers,String checkin,String checkout,boolean smoking)
 	{
 
 		boolean[] available= new boolean[10];
 
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 		try 
 		{
 			SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-yyyy");
 			java.util.Date date1 =  myFormat.parse(checkin);
 			java.util.Date date2 = myFormat.parse(checkout);
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
@@ -402,12 +402,12 @@ public class Db {
 	}
 	public static void delete_res(int idreservation)
 	{
-		String url = "jdbc:mysql://localhost:3306/new_schema";
+		String url = "jdbc:mysql://localhost:3306/HotelData";
 
 		String sql="delete from reservation where idreservation="+idreservation+";";
 		try
 		{
-			Connection conn =DriverManager.getConnection(url, "root", "naldo");
+			Connection conn =DriverManager.getConnection(url, "root", "MyNewPass");
 
 			Statement stmt = conn.createStatement();
 
