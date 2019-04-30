@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
-public class ClientConnection extends Thread{
+public class ClientConnection extends Thread
+{
 	
 	Socket s;
 	DataInputStream din;
@@ -21,6 +22,7 @@ public class ClientConnection extends Thread{
 	
 	public void sendStringToServer(String text)
 	{
+		System.out.println("ClientConnection sends: "+text);
 		try {
 			dout.writeUTF(text);
 			dout.flush();
@@ -92,9 +94,9 @@ public class ClientConnection extends Thread{
 	}
 
 	public Boolean serverResponds() throws InterruptedException {
-		String s=serverResponse;
+		String s1=serverResponse;
 		
-		while(serverResponse==s)
+		while(serverResponse==s1)
 		{
 			TimeUnit.MILLISECONDS.sleep(10);
 //			System.out.println("inside loop");

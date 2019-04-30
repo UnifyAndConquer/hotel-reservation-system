@@ -204,7 +204,9 @@ public class Gui extends JFrame implements ActionListener
     	switch (window)
     	{
     		case 2:
-    			// go to set dates
+    			SetDatesWindow sd = new SetDatesWindow(cc);
+    			sd.setVisible(true);
+    			this.setVisible(false);
     			break;
     			
     		case 6:
@@ -220,4 +222,3 @@ public class Gui extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 }
-

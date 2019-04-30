@@ -14,6 +14,10 @@ public class ServerConnection extends Thread
 	ThreadLocal<Integer> num = ThreadLocal.withInitial(()-> server.num);	// connection number
 	ThreadLocal<Integer> state = ThreadLocal.withInitial(()-> 1);			// server state is local to each thread
 	ThreadLocal<Boolean> login = ThreadLocal.withInitial(()-> false);		// set to true upon login
+	ThreadLocal<Integer> id = ThreadLocal.withInitial(()-> 0);
+	ThreadLocal<String> checkIn = new ThreadLocal();
+	ThreadLocal<String> checkOut = new ThreadLocal();
+	
 	boolean shouldRun = true;
 	
 	public ServerConnection(Socket socket, Server server)
@@ -63,7 +67,8 @@ public class ServerConnection extends Thread
 				state.set(sh.getNextState());							   // update thread state after transition has been carried out
 				System.out.println("Next state: "+state.get());
 				
-				login.set(sh.getLogin()); 								   // update login state		
+				login.set(sh.getLogin()); 								   // update login state	
+				id.set(sh.getId());
 				String textOut = sh.getOutput();						   // return output of state transition to client
 				
 				sendStringToClient(textOut);
@@ -81,13 +86,3 @@ public class ServerConnection extends Thread
 	}
 }
 
-
-
-//public void sendStringToAllClients(String text)
-//{
-//	for (int index = 0; index < server.connections.size(); index++)
-//	{
-//		ServerConnection sc = server.connections.get(index);
-//		sc.sendStringToClient("connection " + index + ":" + text);
-//	}
-//}

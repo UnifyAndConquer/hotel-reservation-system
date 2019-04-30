@@ -1,8 +1,8 @@
 package server;
 import java.util.ArrayList;
 
-public class StateHandler {
-	
+public class StateHandler
+{
 	int currentState, nextState;
 	String input, output, command;
 	Boolean login;
@@ -81,7 +81,9 @@ public class StateHandler {
 				if (x.equals(y))  // all fields are filled
 				{
 					System.out.println("data is of length 5");
-					if(db.insert_client(data.get(0), data.get(1), data.get(2), data.get(3), data.get(4)))  // db returns OK
+					id = db.insert_client(data.get(0), data.get(1), data.get(2), data.get(3), data.get(4));
+					
+					if(id>0)  // db returns OK
 					{
 						System.out.println("db insert successful");
 						output  = "2;,";
@@ -133,7 +135,8 @@ public class StateHandler {
 				
 				if(x.equals(y))  // no missing data after command
 				{
-					boolean rooms[] = db.preferences(Integer.parseInt(data.get(3)), data.get(0), data.get(1), data.get(2).equals(0));
+					boolean rooms[] = db.preferences(Integer.parseInt(data.get(3)), data.get(0), data.get(1), data.get(2).equals("true"));
+					System.out.println("room availability: ");
 					
 					output = "";
 					
@@ -142,6 +145,7 @@ public class StateHandler {
 					
 					for (int i=0; i<rooms.length; i++)
 					{
+						
 						if(rooms[i])
 						{
 							prices[i] = db.select_room_price(i+1);
@@ -151,6 +155,7 @@ public class StateHandler {
 							roomsAvailable = true;
 						}
 					}
+					
 					if(!roomsAvailable)
 					{
 						output = "502;,";
@@ -158,7 +163,7 @@ public class StateHandler {
 					}
 					else
 					{
-						output = command + ";" + output;
+						output = "3;" + output;
 						nextState = 3;
 					}
 				}
@@ -298,9 +303,9 @@ public class StateHandler {
 				{
 					System.out.println("no missing data (6)");
 					
-					if(db.sign_in(data.get(4), data.get(3)) >= 0)   // this function returns user id
+					if(db.sign_in(data.get(1), data.get(0)) >= 0)   // this function returns user id
 					{
-						id = db.sign_in(data.get(4), data.get(3));
+						id = db.sign_in(data.get(1), data.get(0));
 						System.out.println("login successful (6)");
 						output = "2;,";
 						nextState = 2;

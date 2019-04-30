@@ -148,7 +148,7 @@ public class Db {
 	return -1;
 
 	}
-	public static boolean insert_client(String first,String last,String dob, String pass,String mail)
+	public static int insert_client(String first,String last,String dob, String pass,String mail)
 	{
 		String url = "jdbc:mysql://localhost:3306/HotelData";
 		String sql="insert into client (first_name,last_name,date_of_birth,pass,mail) values('"+first+"','" +last+ "',STR_TO_DATE('"+dob+ "', '%d-%m-%Y'),'"+ pass +"','"+mail+"');";
@@ -160,25 +160,36 @@ public class Db {
 			Statement stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery("select* from client");
-
+			
 			while(rs.next())
 			{
 				if(rs.getString("mail").equals(mail))
 				{
 
-					return false;
+					return -1;
 				}
 			}
+			rs.close();
 			stmt.executeUpdate(sql);
 
+				rs = stmt.executeQuery("select* from client");
+				
+				while(rs.next())
+				{
+					if(rs.getString("mail").equals(mail))
+					{
 
+						return rs.getInt("idclient");
+					}
+				}
+				rs.close();
 
 		}
 		catch (Exception exc)
 		{
 			exc.printStackTrace();
 		}
-		return true;
+		return -1;
 	}
 
 	public static void insert_room(boolean smoking,int numberOfPersons,int price)
@@ -355,7 +366,7 @@ public class Db {
 	public static boolean[] preferences(int nbofpers,String checkin,String checkout,boolean smoking)
 	{
 
-		boolean[] available= new boolean[10];
+		boolean[] available= new boolean[6];
 
 		String url = "jdbc:mysql://localhost:3306/HotelData";
 		try 

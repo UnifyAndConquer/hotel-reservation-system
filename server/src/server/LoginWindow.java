@@ -69,7 +69,7 @@ public class LoginWindow extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "DONE;,";
+		                	String command = "DONE;"+txtPass.getText()+','+txtMail.getText();
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 

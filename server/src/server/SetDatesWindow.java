@@ -12,8 +12,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -36,6 +38,8 @@ public class SetDatesWindow extends JFrame implements ActionListener
     JButton btnLogout;
     String serverResponse;
     int nextWindow;
+    JCheckBox checkBox;
+    JLabel label;
     ClientConnection cc;
     ArrayList<String> data = new ArrayList<String>();
 
@@ -64,14 +68,6 @@ public class SetDatesWindow extends JFrame implements ActionListener
         txtDepart = new JTextField();
         txtDepart.setBounds(105, 35, 90, 21);
         add(txtDepart);
-
-        lblPref = new JLabel("Room preferences: ");
-        lblPref.setBounds(10, 60, 90, 21);
-        add(lblPref);
-
-        txtPref = new JTextField();
-        txtPref.setBounds(105, 60, 90, 21);
-        add(txtPref);
         
         lblPeople = new JLabel("Number of people: ");
         lblPeople.setBounds(10, 85, 90, 21);
@@ -80,6 +76,14 @@ public class SetDatesWindow extends JFrame implements ActionListener
         txtPeople = new JTextField();
         txtPeople.setBounds(105, 85, 90, 21);
         add(txtPeople);
+        
+        checkBox = new JCheckBox("");
+		checkBox.setBounds(442, 178, 128, 23);
+		getContentPane().add(checkBox);
+		
+		label = new JLabel("Smoking:");
+		label.setBounds(382, 178, 73, 19);
+		getContentPane().add(label);
         
 
         btnSearch = new JButton("Search");
@@ -94,7 +98,7 @@ public class SetDatesWindow extends JFrame implements ActionListener
 		            {
 		                try 
 		                {
-		                	String command = "SEARCH;"+txtArrive.getText()+","+txtDepart.getText()+","+txtPref.getText()+","+txtPeople.getText();
+		                	String command = "SEARCH;"+txtArrive.getText()+","+txtDepart.getText()+","+checkBox.isSelected()+","+txtPeople.getText();
 		                	System.out.println("Client sends: " + command);
 		                	sendCommand(command);
 						} 
@@ -223,36 +227,34 @@ public class SetDatesWindow extends JFrame implements ActionListener
 			data.add(dat[i]);
 		}
 	}
-    
+
     public void goToNextWindow(int window) throws UnknownHostException, IOException
     {
     	switch (window)
     	{
-    		case 3:
-    			ChooseRoomWindow chooseRoom = new ChooseRoomWindow(cc);
-    			chooseRoom.setVisible(true);
-    			this.setVisible(false);
-    			break;
-    			
-    		case 5:
-    			NoRoomsWindow noRooms = new NoRoomsWindow(cc);
-    			noRooms.setVisible(true);
-    			this.setVisible(false);
-    			break;
-    			
-    		case 9:
-    			ProfileWindow profile = new ProfileWindow(cc);
-    			profile.setVisible(true);
-    			this.setVisible(false);
-    			break;
-    			
-    		case 6:
-    			LoginWindow login = new LoginWindow(cc);
-    			login.setVisible(true);
-    			this.setVisible(false);
-    			break;
-    			
-    		default:
+    	case 3:
+    		ChooseRoom choose = new ChooseRoom(cc, data);
+    		choose.frame.setVisible(true);
+    		this.setVisible(false);
+    		break;
+
+    	case 9:
+    		Profile prof = new Profile(cc);
+    		prof.frame.setVisible(true);
+    		this.setVisible(false);
+    		break;
+
+    	case 5:
+    		JOptionPane.showMessageDialog(null, "No rooms of this type are available.");
+    		break;
+
+    	case 6:
+    		LoginWindow login = new LoginWindow(cc);
+    		login.setVisible(true);
+    		this.setVisible(false);
+    		break;
+
+    	default:
     	}
     }
     
